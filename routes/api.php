@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProjectController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,4 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('projects', [ProjectController::class, 'index']);
+Route::middleware('auth:sanctum')->get('projects', [ProjectController::class, 'index']);
+
 
