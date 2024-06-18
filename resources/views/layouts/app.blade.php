@@ -50,6 +50,18 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <!-- projects -->
+                        @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.projects.index') }}">Progetti</a>
+                        </li>
+                        @endauth
+                        @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.projects.create') }}">Nuovo progetto</a>
+                        </li>
+                        @endauth
+
                         <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
