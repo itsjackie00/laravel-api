@@ -32,7 +32,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#" id="userProfile" role="button">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Auth::user()->name}}</span>
-                <img class="rounded-circle" src="/user.jpeg">
             </a>
           </ul>
         </li>
