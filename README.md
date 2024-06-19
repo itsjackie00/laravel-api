@@ -216,9 +216,51 @@ es. FILESYSTEM_DISK=public
 php artisan storage:link
 
 #salvare
-Storage::put('images', $data['image']); //ritorna il path
+Storage::put('nomecartella', $data['image']); //ritorna il path
+#or
+$path = Storage::putFileAs(
+    'avatars', $request->file('avatar'), $name
+);
 
 #per visualizzare 
 <img src="{{ asset('storage/' . $post->cover_image) }}">
+....
 
 ```
+## Relazioni 
+```bash
+#migration di esempio 
+
+#up
+Schema::table('posts', function (Blueprint $table) {
+
+    $table->unsignedBigInteger('user_id');
+    $table->foreign('user_id')
+        ->references('id')
+        ->on('users')->cascadeOnDelete();
+});
+# shortcut
+	
+$table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+#down
+
+$table->dropForeign('posts_user_id_foreign');
+$table->dropColumn('user_id');
+
+#nei model
+#editare i model con relazioni e fillable o guarded
+#use Illuminate\Database\Eloquent\Relations\HasMany;
+
+protected $guarded = [];
+
+public function products():HasMany
+{
+   return $this->hasMany(Product::class);
+}
+
+```
+
+
+
+

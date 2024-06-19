@@ -1,16 +1,21 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Technology')
+@section('title', 'Edit Category: ' . $category->name)
 
 @section('content')
     <section>
-        <h2>Create a new Technology</h2>
-        <form action="{{ route('admin.technologies.store') }}" method="POST" enctype="multipart/form-data">
+        <div class="d-flex justify-content-between align-items-center py-4">
+            <h2>Edit category: {{$category->name}}</h2>
+            <a href="{{route('admin.categories.show', $category->slug)}}" class="btn btn-danger">Show Category</a>
+        </div>
+
+        <form action="{{ route('admin.categories.update', $category->slug) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="mb-3">
-                <label for="name" class="form-label">Title</label>
+                <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                    value="{{ old('name') }}" required>
+                    value="{{ old('name', $category->name) }}" required>
                 @error('name')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -19,7 +24,7 @@
 
 
             <div class="mb-3">
-                <button type="submit" class="btn btn-danger">Create</button>
+                <button type="submit" class="btn btn-danger">Save</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
 
             </div>
@@ -27,7 +32,6 @@
 
 
     </section>
-    <!-- nice editor nel content si inserisce i punti esclamativi -->
    @include('partials.editor')
 
 @endsection

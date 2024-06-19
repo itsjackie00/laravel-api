@@ -1,23 +1,45 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+@section('title', $project->title)
 
-@section('content')<div class="container">
-    <h1>{{ $project->title }}</h1>
-    <p>{{ $project->description }}</p>
-    @if($project->type)
-    <p><strong>Tipologia:</strong> {{ $project->type->name }}</p>
+@section('content')
+    <div class="d-flex justify-content-between align-items-center py-4">
+        <h1>Progect: {{$project->title}}</h1>
+        <!-- BUTTONS -->
+        <div class="m-2">
+            <a href="{{route('admin.projects.edit', $project->slug)}}" class="btn btn-outline-secondary">Edit</a>
+            <form action="{{route('admin.projects.destroy', $project->slug)}}" method="POST" class="d-inline-block">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="delete-button btn btn-outline-danger"  data-item-title="{{ $project->title }}">
+                 Delete</i>
+                </button>
+              </form>
+        </div>
+    </div>
+    <!-- IMAGE + CONTENT -->
+    <div class="row">
+        <!-- IMAGE -->
+        <div class="col-10 col-md-6 col-lg-6 ">
+            <img src="{{ asset('storage/' . $project->image)}}" class="img-fluid" alt="{{$project->title}}" class="img-fluid "> 
+        </div>
+        <!-- CONTENT -->
+        <div class="col-10 col-md-6 col-lg-6">
+            <p class="my-3">{{$project->content}}</p>
+        </div>      
+    </div>
+    <!-- CATEGORIES -->
+    @if($project->category)
+    <p class="my-3 badge text-bg-info">{{$project->category->name}}</p>
     @endif
-    @if($project->image)
-    <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="img-thumbnail" width="300">
-    @endif
-    @if($project->technologies->isNotEmpty())
-    <p><strong>Tecnologie:</strong>
-        @foreach($project->technologies as $technology)
-            <span>{{ $technology->name }}</span>@if(!$loop->last), @endif
-        @endforeach
-    </p>
-    @endif
-    <br>
-    <a href="{{ route('admin.projects.index') }}" class="btn btn-secondary mt-3">Torna indietro</a>
-</div>
+    <!-- TECHNOLOGIES -->
+    <div class="m-3">
+        @if($project->Technology)
+            @foreach ($project->Technology as $tag)
+            <span class="badge text-bg-danger">{{$technology->name}}</span>
+            @endforeach
+        @endif
+    </div>
 
+</section>
+@include('partials.modal-delete')
 @endsection

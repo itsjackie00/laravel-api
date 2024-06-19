@@ -1,44 +1,82 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Create Project')
 
 @section('content')
-<div class="container">
-    <h1>Aggiungi Nuovo Progetto</h1>
-    <div class="mb-3">
-        <label for="type_id" class="form-label">Tipologia</label>
-        <select name="type_id" class="form-control" id="type_id">
-            <option value="">Seleziona Tipologia</option>
-            @foreach($types as $type)
-            <option value="{{ $type->id }}">{{ $type->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="mb-3">
-            <label for="title" class="form-label">Titolo</label>
-            <input type="text" name="title" class="form-control" id="title" required>
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Descrizione</label>
-            <textarea name="description" class="form-control" id="description" rows="5" required></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="image" class="form-label">Immagine</label>
-            <input type="file" name="image" class="form-control" id="image">
-        </div>
-        <button type="submit" class="btn btn-primary">Salva</button>
-        <a href="{{ route('admin.projects.index') }}" class="btn btn-secondary">Annulla</a>
-    </form>
-    {{--<div class="mb-3">
-        <label for="technologies" class="form-label">Tecnologie</label>
-        @foreach($technologies as $technology)
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="technologies[]" value="{{ $technology->id }}" id="technology-{{ $technology->id }}">
-            <label class="form-check-label" for="technology-{{ $technology->id }}">{{ $technology->name }}</label>
-        </div>
-        @endforeach
-    </div>--}}
+    <section>
+        <h2>Create a new project</h2>
+        <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <!-- TITLE -->
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title"
+                    value="{{ old('title') }}" minlength="3" maxlength="200" required>
+                @error('title')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div id="titleHelp" class="form-text text-white">Insert a min of 3 and max of 200 letters</div>
+            </div>
+            <!-- IMAGE -->
+            <div class="mb-3">
+                <!-- placeholder -->
+                <img src="/image/placeholder.jpeg" id="upload_preview" witdh="100" class="img-show">
+                <label for="image" class="form-label mt-3">Image</label>
+                <input type="file" accept="image/*" class="form-control @error('image') is-invalid @enderror" id="upload_image"
+                    name="image" value="{{ old('image') }}">
+                @error('image')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <!-- CONTENT -->
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" required>
+                {!! old('content') !!}
+              </textarea>
+                @error('content')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <!-- CATEGORY SELECD -->
+            <div class="mb-3">
+                <label for="category_id" class="form-label">Select Category</label>
+                <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror">
+                    <option value="">Select Category</option>
+                  @foreach ($categories as $category)
+                      <option value="{{$category->id}}" {{ $category->id == old('category_id') ? 'selected' : '' }}>{{$category->name}}</option>
+                  @endforeach
+                </select>
+                @error('category_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            <!-- TECHNOLOGIES -->
+            <div class="mb-3">
+                <label for="technology_id" class="form-label text-white">Select Techonologies</label>
+                <div id="technology_id">
+                    @foreach ($technologies as $technology)
+                        <div class="form-check form-check-inline text-white">
+                            <input class="form-check-input" type="checkbox" name="technologies[]" id="inlineCheckbox1"
+                                value="{{ $technology->id }}"
+                                {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="inlineCheckbox1">{{ $technology->name }}</label>
+                        </div>
+                    @endforeach
+                </div>
+                @error('technologies')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <!-- BUTTONS -->
+            <div class="mb-3">
+                <button type="submit" class="btn btn-danger">Create</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
 
+            </div>
+        </form>
+    </section>
+    <!-- nice editor nel content si inserisce i punti esclamativi -->
+   @include('partials.editor')
 
-</div>
 @endsection

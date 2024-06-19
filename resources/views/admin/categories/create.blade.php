@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Technology')
+@section('title', 'Create Category')
 
 @section('content')
     <section>
-        <h2>Create a new Technology</h2>
-        <form action="{{ route('admin.technologies.store') }}" method="POST" enctype="multipart/form-data">
+        <h2>Create a new category</h2>
+        <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Title</label>

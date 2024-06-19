@@ -1,18 +1,24 @@
 <?php
 
 namespace Database\Seeders;
-
 use App\Models\Technology;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TechnologySeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        $technology = new Technology; // Create a new instance
-        $technology->create(['name' => 'Laravel']);
-        $technology->create(['name' => 'React']);
-        // ... other technologies
+        $technologies=['html','css','Bootstrap','javascript','vue','scss','php','laravel','mysql'];
+        foreach ($technologies as $technology) {
+            $newTechnology = new Technology();
+            $newTechnology->name = $technology;
+            $newTechnology->slug = Technology::generateSlug($newTechnology->name);
+            $newTechnology->save();
+        }
     }
 }
-
