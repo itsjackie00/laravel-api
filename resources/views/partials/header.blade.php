@@ -14,7 +14,7 @@
         </li>
         <!-- Icon Github-->
         <li class="nav-item me-3 me-lg-0">
-          <a class="nav-link" href="https://github.com/adrisala20">
+          <a class="nav-link" href="https://github.com/itsjackie00?tab=repositories" target="_blank">
             <i class="fab fa-github"></i>
           </a>
         </li>
